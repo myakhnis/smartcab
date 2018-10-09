@@ -89,10 +89,13 @@ class LearningAgent(Agent):
         # Calculate the maximum Q-value of all actions for a given state
         actions = self.Q[state]
         maxQ = 0
-        optimal_actions = []
         for action, qval in actions.items():
             if qval >= maxQ:
                 maxQ = qval
+
+        optimal_actions = []
+        for action, qval in actions.items():
+            if qval == maxQ:
                 optimal_actions.append(action)
 
         if len(optimal_actions) >= 1:
@@ -111,10 +114,11 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
-        if state not in self.Q:
-            self.Q[state] = {}
-            for action in self.valid_actions:
-                self.Q[state][action] = 0.0
+        if self.learning:
+            if state not in self.Q:
+                self.Q[state] = {}
+                for action in self.valid_actions:
+                    self.Q[state][action] = 0.0
 
         return
 
